@@ -1,18 +1,23 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import interviewSlice from './features/interviewSlice';
+import interviewReducer from '../features/interviewSlice';
 
 const persistConfig = {
   key: 'root',
   storage,
+  whitelist: ['interview'],
 };
 
-const persistedReducer = persistReducer(persistConfig, interviewSlice);
+const rootReducer = {
+  interview: interviewReducer,
+};
+
+const persistedInterview = persistReducer(persistConfig, interviewReducer);
 
 export const store = configureStore({
   reducer: {
-    interview: persistedReducer,
+    interview: persistedInterview,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
